@@ -1,0 +1,21 @@
+# /proj/sovereign/config.yaml
+sources:
+  - type: inline
+    config:
+      instances:
+        - name: httpbin-proxy
+          service_clusters: ['*']
+          domains:
+            - example.local
+          endpoints:
+            - address: httpbin.org
+              port: 80
+              region: us-east-1
+
+templates:
+  default:
+    clusters:  file+jinja:///etc/sovereign/templates/clusters.yaml
+    listeners: file+jinja:///etc/sovereign/templates/listeners.yaml
+
+template_context:
+  eds: module://sovereign.utils.eds

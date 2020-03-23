@@ -1,0 +1,34 @@
+node:
+  id: envoy
+  cluster: dev
+  metadata:
+    ipv4: 127.0.0.1
+
+admin:
+  access_log_path: /dev/null
+  address:
+    socket_address:
+      address: 0.0.0.0
+      port_value: 9901
+
+dynamic_resources:
+  lds_config:
+    api_config_source:
+      api_type: REST
+      cluster_names: [controlplane]
+      refresh_delay: 15s
+  cds_config:
+    api_config_source:
+      api_type: REST
+      cluster_names: [controlplane]
+      refresh_delay: 5s
+
+static_resources:
+  clusters:
+  - name: controlplane
+    connect_timeout: 5s
+    type: STRICT_DNS
+    hosts:
+    - socket_address:
+        address: sovereign
+        port_value: 8080
